@@ -1,5 +1,5 @@
 # Ignore everything
 *
 
-# Except
+# Except these files 
 !init.el
