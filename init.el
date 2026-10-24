@@ -21,6 +21,14 @@
 ;; Make ESC quit prompts
 (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
 
+;; (use-package exec-path-from-shell
+;;   :ensure t
+;;   :if (memq window-system '(mac ns x)) ; Only runs on GUI versions of Emacs
+;;   :config
+;;   ;; Syncs path and critical Node environment variables
+;;   (exec-path-from-shell-initialize)
+;;   (exec-path-from-shell-copy-env "NODE_PATH"))
+
 ;; For MacOS command key is control. Move Spotlight function key to
 ;; Mac control key.
 (setq mac-command-modifier 'control)
@@ -29,6 +37,28 @@
 (set-face-attribute 'default nil :height 200)
 
 (global-set-key (kbd "C-x C-b") #'ibuffer)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;; Dropbox config
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; 1. The local home folder where you edit your day-to-day notes
+(setq org-directory "~/org")
+
+;; 2. Clear any cached tracking from prior failed sync attempts
+(setq org-mobile-files-alist nil)
+
+;; 3. The absolute path to your active macOS Dropbox directory
+(setq org-mobile-directory "/Users/joseph.savoie/Library/CloudStorage/Dropbox/Apps/MobileOrg")
+
+;; 4. The target file where changes made from your phone land for desktop processing
+(setq org-mobile-inbox-for-pull "/Users/joseph.savoie/Library/CloudStorage/Dropbox/Apps/MobileOrg/inbox.org")
+
+;; 5. The list of local folders Emacs will scan to construct your agenda for mobile
+(setq org-mobile-files '("~/org"))
+
+
+
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;; Calendar
@@ -88,8 +118,6 @@
         ("c" "Weight Check-in" entry
          (file+headline "~/org/cycling/cycling.org" "Weight Tracking")
          "* %U\n- Weight: %^{Weight} lb\n- Weekly Trend:\n- Notes:\n")))
-
-(setq org-mobile-directory "~/Library/Mobile Documents/iCloud~com~mobileorg~mobileorg/Documents")
 
 (org-babel-do-load-languages
  'org-babel-load-languages
@@ -242,6 +270,7 @@
 (require 'ob-clojure)
 
 (setq org-babel-clojure-backend 'cider)
+(setq cider-clojure-cli-aliases nil)
 (require 'cider)
 
 (setq gc-cons-threshold (* 100 1024 1024)
@@ -377,7 +406,39 @@
 ;; valign org mode tables
 (add-hook 'org-mode-hook #'valign-mode)
 
-(add-to-list 'auto-mode-alist '("\\.vue\\'" . web-mode))
+;;(add-to-list 'auto-mode-alist '("\\.vue\\'" . web-mode))
+
+;; Vue development
+(use-package lsp-mode
+  :ensure t
+  :commands (lsp lsp-deferred)
+  :init
+  (setq lsp-keymap-prefix "C-c l")
+  :config
+  ;; CRITICAL: Stops Emacs from querying npm/global paths for typescript binaries
+  (setq lsp-clients-typescript-server-path nil)
+  (setq lsp-disabled-clients '(ts-ls vtsls)) 
+  
+  ;; Force Emacs to treat standard JS smoothly
+  (setq lsp-javascript-implicit-project-config-check-js t)
+  (require 'lsp-volar))
+
+(use-package web-mode
+  :ensure t
+  :mode "\\.vue\\'"
+  :config
+  ;; Forces web-mode to treat content in <script> tags as JavaScript
+  (setq web-mode-content-types-alist '(("jsx" . "\\.vue\\'")))
+  :hook (web-mode . lsp-deferred))
+
+;; (use-package lsp-mode
+;;   :ensure t
+;;   :hook (js-mode . lsp-deferred) ; Also activates LSP in standalone .js files
+;;   :config
+;;   ;;
+;;   (setq lsp-clients-typescript-server-path "/opt/homebrew/lib/node_modules/typescript/lib/tsserverLibrary.js")
+;;   ;; Disables strict TypeScript warnings for standard JS files
+;;   (setq lsp-javascript-implicit-project-config-check-js t))
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -395,7 +456,7 @@
    '("/Users/joseph.savoie/org/inbox.org" "/Users/joseph.savoie/org/cycling/fit-utils.org" "/Users/joseph.savoie/org/cycling/cycling.org"))
  '(org-cycle-separator-lines 1)
  '(package-selected-packages
-   '(jupyter eglot pyvenv speed-type vertico org-roam valign clojure-mode lsp-mode cider lsp-treemacs flycheck company))
+   '(exec-path-from-shell web-mode jupyter eglot pyvenv speed-type vertico org-roam valign clojure-mode lsp-mode cider lsp-treemacs flycheck company))
  '(send-mail-function 'mailclient-send-it))
 (put 'downcase-region 'disabled nil)
 
