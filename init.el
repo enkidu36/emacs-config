@@ -17,44 +17,7 @@
 (setq use-package-always-ensure nil)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;;; 2. Visual Theme Configuration (Zero-Dependency Custom Sourcerer Layout)
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(defun apply-custom-sourcerer-theme ()
-  "Apply a high-fidelity inline reproduction of the doom-sourcerer palette."
-  (interactive)
-  (let ((bg "#151517")
-        (fg "#c2c2c4")
-        (comment "#6b6b6e")
-        (keyword "#aa759f")
-        (string "#718c00")
-        (builtin "#4f8287")
-        (variable "#dc9656")
-        (function "#7cafc2")
-        (type "#fab28e")
-	(region "#222225")
-	(hl-line "#2d2d31"))
-
-    (global-hl-line-mode 1) 
-    
-    (set-face-attribute 'default nil :background bg :foreground fg)
-    (set-face-attribute 'cursor nil :background fg)
-
-    (set-face-attribute 'hl-line nil :background hl-line :extend t)
-    (set-face-attribute 'region nil :background region :foreground 'unspecified)
-    
-    (set-face-attribute 'font-lock-comment-face nil :foreground comment :background 'unspecified :slant 'italic)
-    (set-face-attribute 'font-lock-keyword-face nil :foreground keyword :weight 'bold)
-    (set-face-attribute 'font-lock-string-face nil :foreground string)
-    (set-face-attribute 'font-lock-builtin-face nil :foreground builtin)
-    (set-face-attribute 'font-lock-variable-name-face nil :foreground variable)
-    (set-face-attribute 'font-lock-function-name-face nil :foreground function :weight 'bold)
-    (set-face-attribute 'font-lock-type-face nil :foreground type)
-    (set-face-attribute 'font-lock-constant-face nil :foreground variable :weight 'bold)))
-
-(apply-custom-sourcerer-theme)
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;;; 3. Core System Startup Preferences
+;;;;; Core System Startup Preferences
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (setq inhibit-startup-message t)
 (setq inhibit-splash-screen t)
@@ -76,9 +39,10 @@
 (setq mac-command-modifier 'control)
 (set-face-attribute 'default nil :height 200)
 (global-set-key (kbd "C-x C-b") #'ibuffer)
+(load-theme 'deeper-blue)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;;; 4. Dropbox Cloud Synchronization Configuration
+;;;;; Dropbox Cloud Synchronization Configuration
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (setq org-directory "~/org")
 (setq org-mobile-files-alist nil)
@@ -95,7 +59,7 @@
 (setq org-agenda-include-diary t)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;;; 6. Org-Mode Setup & Capture Templates
+;;;;; Org-Mode Setup & Capture Templates
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (require 'org)
 
@@ -127,7 +91,7 @@
 (setq org-log-into-drawer t)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;; 7. Org-Roam Knowledge Graph Management
+;;;  Org-Roam Knowledge Graph Management
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (use-package org-roam
   :init
@@ -147,7 +111,7 @@
 (setq org-roam-dailies-directory "daily/")
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;;; 8. Clojure IDE Ecosystem Configuration
+;;;;; Clojure IDE Ecosystem Configuration
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (use-package clojure-mode
   :config
