@@ -30,10 +30,17 @@
         (builtin "#4f8287")
         (variable "#dc9656")
         (function "#7cafc2")
-        (type "#fab28e")s)
+        (type "#fab28e")
+	(region "#222225")
+	(hl-line "#2d2d31"))
+
+    (global-hl-line-mode 1) 
     
     (set-face-attribute 'default nil :background bg :foreground fg)
     (set-face-attribute 'cursor nil :background fg)
+
+    (set-face-attribute 'hl-line nil :background hl-line :extend t)
+    (set-face-attribute 'region nil :background region :foreground 'unspecified)
     
     (set-face-attribute 'font-lock-comment-face nil :foreground comment :background 'unspecified :slant 'italic)
     (set-face-attribute 'font-lock-keyword-face nil :foreground keyword :weight 'bold)
